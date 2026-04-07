@@ -33,7 +33,7 @@ export default async function MemberPage({ params }: { params: Params }) {
       <LiquidGlassFilter />
       <LoadingScreen />
 
-      <main className="relative min-h-dvh max-w-[480px] mx-auto overflow-hidden">
+      <main className="relative min-h-dvh max-w-[480px] mx-auto overflow-x-hidden">
         {/* Background — fixed, no parallax */}
         <div className="fixed inset-0 -z-10">
           {member.coverPhoto ? (
