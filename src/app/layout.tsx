@@ -3,8 +3,8 @@ import { satoshi } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Circle13 — Connect",
-  description: "Circle13 team link hub. Connect, explore, and collaborate.",
+  title: "Praseeda P Rao — Circle13",
+  description: "Connect with Praseeda P Rao. Co-Founder at Circle13.",
 };
 
 export default function RootLayout({

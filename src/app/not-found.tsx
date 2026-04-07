@@ -10,7 +10,7 @@ export default function NotFound() {
         This person doesn&apos;t exist yet.
       </p>
       <Link
-        href="/bharath"
+        href="/praseeda"
         className="mt-6 text-xs text-text-accent hover:text-accent-gold-hover transition-colors uppercase tracking-widest"
       >
         Go to Circle13
