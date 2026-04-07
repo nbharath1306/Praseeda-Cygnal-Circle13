@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════
+   iOS 26 DESIGN SYSTEM
+   Exact Apple system colors, typography, curves.
+
+   Colors: noahgilmore.com/blog/dark-mode-uicolor-compatibility
+   Typography: Apple HIG
+   Corners: iOS 26 concentric (24pt+ on cards)
+   ══════════════════════════════════════════════ */
+
+@theme {
+  /* iOS System Backgrounds (Dark Mode) */
+  --color-bg-primary: #000000;              /* systemBackground */
+  --color-bg-elevated: #1C1C1E;             /* secondarySystemBackground */
+  --color-bg-subtle: #2C2C2E;              /* tertiarySystemBackground */
+  --color-bg-card: #1C1C1E;                /* secondarySystemGroupedBackground */
+
+  /* iOS Borders */
+  --color-border-default: #38383A;          /* opaqueSeparator */
+  --color-border-hover: #545458;            /* separator */
+
+  /* iOS Labels (Dark Mode) */
+  --color-text-primary: #FFFFFF;            /* label */
+  --color-text-secondary: #EBEBF5;         /* secondaryLabel (99 alpha) */
+  --color-text-tertiary: #EBEBF5;          /* tertiaryLabel (4C alpha) */
+  --color-text-accent: #0A84FF;            /* systemBlue */
+
+  /* iOS System Colors (Dark Mode) */
+  --color-accent-gold: #0A84FF;            /* systemBlue */
+  --color-accent-gold-hover: #409CFF;
+  --color-accent-gold-muted: rgba(10, 132, 255, 0.12);
+  --color-status-live: #30D158;            /* systemGreen */
+  --color-status-beta: #64D2FF;            /* systemTeal */
+  --color-status-soon: #FFD60A;            /* systemYellow */
+
+  /* iOS Fills */
+  --color-fill: rgba(120, 120, 128, 0.36); /* systemFill */
+  --color-fill-secondary: rgba(120, 120, 128, 0.32); /* secondarySystemFill */
+  --color-fill-tertiary: rgba(118, 118, 128, 0.24);  /* tertiarySystemFill */
+
+  /* iOS System Grays */
+  --color-gray: #8E8E93;                   /* systemGray */
+  --color-gray2: #636366;                  /* systemGray2 */
+  --color-gray3: #48484A;                  /* systemGray3 */
+  --color-gray4: #3A3A3C;                  /* systemGray4 */
+  --color-gray5: #2C2C2E;                  /* systemGray5 */
+  --color-gray6: #1C1C1E;                  /* systemGray6 */
+
+  --font-body: var(--font-body);
+  --font-display: var(--font-body);
+}
+
+html {
+  background: #000;
+  color: #fff;
+}
+
+body {
+  /* Apple system font stack — SF Pro on Apple devices, Inter fallback */
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Apple default body tracking */
+  letter-spacing: -0.022em;
+}
+
+::selection { background: rgba(10, 132, 255, 0.4); color: #fff; }
+::-webkit-scrollbar { width: 0; }
+
+/* ══════════════════════════════════════════════
+   LIQUID GLASS — iOS 26
+
+   Three-layer system:
+   1. ::after — backdrop-filter + SVG refraction
+   2. ::before — glass tint + inner shadows (thickness)
+   3. vanilla-tilt.js — 3D tilt + glare overlay
+
+   Corners: 24px (iOS 26 standard for cards)
+   ══════════════════════════════════════════════ */
+
+.liquid-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  will-change: transform;
+  border-radius: 24px;
+  /* Outer depth shadow */
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s;
+}
+
+.liquid-glass:hover {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+}
+
+.liquid-glass:active {
+  transform: scale(0.97) !important;
+  transition: transform 0.08s;
+}
+
+/* Layer 1: SVG distortion filter on backdrop */
+.liquid-glass::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  backdrop-filter: url(#liquid-glass-card) blur(1px);
+  -webkit-backdrop-filter: url(#liquid-glass-card) blur(1px);
+}
+
+/* Layer 2: Glass body — CLEAR center, glow at EDGES only */
+.liquid-glass::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  /* NO flat tint — glass is clear, not grey */
+  background: transparent;
+  /* Inner glow at edges only — this IS the glass */
+  box-shadow:
+    inset 0 0 20px -5px rgba(255, 255, 255, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.30);
+}
+
+.liquid-glass:hover::before {
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow:
+    inset 0 0 24px -4px rgba(255, 255, 255, 0.70),
+    inset 0 1px 0 rgba(255, 255, 255, 0.40),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.40);
+}
+
+/* vanilla-tilt glare — inherit card curves */
+.js-tilt-glare { border-radius: inherit; }
+.js-tilt-glare-inner { border-radius: inherit; }
+
+/* ── Hero panel ── */
+.liquid-glass-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  will-change: transform;
+  border-radius: 28px; /* slightly larger for hero */
+  box-shadow: 0 6px 40px rgba(0, 0, 0, 0.22);
+  transition: box-shadow 0.3s;
+}
+
+.liquid-glass-panel::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  backdrop-filter: url(#liquid-glass-panel) blur(1px);
+  -webkit-backdrop-filter: url(#liquid-glass-panel) blur(1px);
+}
+
+.liquid-glass-panel::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: transparent;
+  box-shadow:
+    inset 0 0 28px -6px rgba(255, 255, 255, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ── Materialization ── */
+@keyframes materialize {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+    filter: brightness(1.5) blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: brightness(1) blur(0px);
+  }
+}
+
+@keyframes pulse-alive {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.pulse-alive { animation: pulse-alive 2.5s ease-in-out infinite; }
+
+/* ── Glass photo ring — liquid glass border around profile photo ── */
+.glass-photo-ring {
+  position: relative;
+  padding: 4px;
+  border-radius: 50%;
+  /* Glass ring material */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  box-shadow:
+    inset 0 0 12px -3px rgba(255, 255, 255, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 4px 20px rgba(0, 0, 0, 0.25);
+  /* vanilla-tilt applies here for independent tilt */
+  overflow: hidden;
+}
+.glass-photo-ring .js-tilt-glare { border-radius: 50%; }
+.glass-photo-ring .js-tilt-glare-inner { border-radius: 50%; }
+
+
+/* ── Admin (uses iOS system colors) ── */
+.admin-section { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.25rem; border-radius: 16px; background: #1C1C1E; }
+.section-title { font-size: 13px; font-weight: 600; color: #8E8E93; letter-spacing: -0.08px; }
+.input-field { width: 100%; padding: 11px 16px; border-radius: 12px; background: #2C2C2E; border: none; font-size: 17px; letter-spacing: -0.408px; color: #fff; outline: none; transition: box-shadow 0.2s; }
+.input-field::placeholder { color: #636366; }
+.input-field:focus { box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.35); }
+.add-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 12px; font-size: 15px; font-weight: 600; letter-spacing: -0.24px; color: #0A84FF; background: rgba(10, 132, 255, 0.12); border: none; transition: all 0.15s; }
+.add-btn:hover { background: rgba(10, 132, 255, 0.2); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
