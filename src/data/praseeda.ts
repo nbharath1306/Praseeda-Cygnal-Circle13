@@ -3,7 +3,7 @@ import { TeamMember } from "./types";
 const praseeda: TeamMember = {
   slug: "praseeda",
   name: "Praseeda P Rao",
-  title: "Co-Founder",
+  title: "CMO",
   company: "Circle13",
   bio: "Designing experiences, building brands, and turning ideas into reality.",
   photo: "/images/team/praseeda.jpeg",
