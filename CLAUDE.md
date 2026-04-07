@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-C13 Hub — a Next.js team link aggregation platform (like Linktree for teams). Each team member gets a personalized profile page with an iOS 26-inspired liquid glass UI. An admin interface allows editing profiles, which persists changes by committing to GitHub and triggering Vercel rebuilds.
+Praseeda P Rao's personal link hub — a standalone Next.js site with iOS 26-inspired liquid glass UI. Deployed as a subdomain (e.g., `praseeda.circle13.space`) on Vercel. Forked from the Circle13 team hub template.
 
 ## Commands
 
@@ -20,22 +20,22 @@ No test framework is configured.
 **Stack:** Next.js 16 (App Router), React 19, TypeScript 5, Tailwind CSS 4, Framer Motion, vanilla-tilt.js
 
 **Data flow — GitHub as CMS:**
-1. Team member data lives in individual TypeScript files under `src/data/` (e.g., `bharath.ts`)
-2. `src/data/team.ts` is the central registry that imports and exports all members
+1. Praseeda's profile data lives in `src/data/praseeda.ts`
+2. `src/data/team.ts` is the registry that imports and exports members
 3. `src/lib/data.ts` provides runtime access (`getMember`, `getAllMembers`) and GitHub API helpers (`saveMemberToGitHub`)
 4. Admin saves → POST `/api/members` (PIN-authenticated) → commits to GitHub → Vercel auto-rebuilds
 
 **Routing:**
+- `/` redirects to `/praseeda`
 - `/[slug]` — Public profile page (server component, `force-dynamic`)
-- `/admin` — PIN-protected admin home (lists members, add new)
+- `/admin` — PIN-protected admin home
 - `/admin/[slug]` — Member editor with drag-and-drop link reordering (@dnd-kit)
 - `/api/members` — GET/POST API for member data
-- `/` redirects to `/bharath`
 
 **Theming system (`src/lib/themes.ts`):**
 - 7 themes (noir, midnight, ember, forest, royal, ivory, monochrome) defined as CSS custom property sets
 - Applied via `ThemeProvider` component using inline style variables
-- Each member can set a `theme` field; defaults to "noir"
+- Praseeda's site uses the "royal" (purple/violet) theme
 
 **Liquid glass UI (`src/app/globals.css`):**
 - 3-layer technique: SVG displacement filter (`LiquidGlassFilter` component) + inset box-shadows + vanilla-tilt 3D glare
@@ -48,18 +48,13 @@ No test framework is configured.
 - Icons: custom brand SVGs in `src/lib/icons.tsx` with Lucide React fallback
 - Fonts: local Satoshi WOFF2 files loaded in `src/lib/fonts.ts` via `--font-body` CSS variable
 - Haptic tap sound: white noise burst via Web Audio API (`src/lib/sound.ts`)
+- Photos go in `public/images/team/` — expects `praseeda.jpeg` and `praseeda-cover.jpeg`
 
 ## Environment Variables
 
 ```
 GITHUB_TOKEN    # Required for admin saves to GitHub
-GITHUB_REPO     # Default: nbharath1306/Cygnal-Circle13
+GITHUB_REPO     # Default: nbharath1306/Praseeda-Cygnal-Circle13
 GITHUB_BRANCH   # Default: main
 ADMIN_PIN       # Required for admin API authentication
 ```
-
-## Adding a New Team Member
-
-1. Create `src/data/<slug>.ts` exporting a `TeamMember` object (see `src/data/types.ts` for shape)
-2. Import and add to the `members` array in `src/data/team.ts`
-3. Or use the admin UI at `/admin` which automates both steps via GitHub commits
